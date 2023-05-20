@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                Hi <span class='text-success'>{{ current_user.username }}</span>, say something:
+            </p>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.body.label }}<br>
+                    {{ form.body(cols=100, rows=1) }}<br>
+                    {% for error in form.body.errors %}
+                    <span style="color: red">{{ error }}</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.submit() }}
+                </p>
+            </form>
+{% else %}
+            <a href="{{ url_for('login') }}">Please log in to send a message</a>
+{% endif %}
+        </div>
+    </div>
+    <div class="row" >
+        <table>
+            <tr valign="top">
+                <td class="col-md-2 border border-light" style="display: inline-block" ><b><h2>Avatar</h2></b></td>
+                <td class="col-md-4 border border-light" style="display: inline-block" ><b><h2>Message</h2></b></td>
+                <td class="col-md-2 border border-light" style="display: inline-block" ><b><h2>Message</h2></b></td>
+                <td class="col-md-2 border border-light" style="display: inline-block" ><b><h2>Uploaded</h2></b></td>
+                <td class="col-md-2 border border-light" style="display: inline-block" ><b><h2>Bio</h2></b></td>
+            </tr>
+        </table>
+            {% for post in posts %}
+                <!-- {% if post %} -->
+                    <table>
+                        <tr valign="top">
+                            
+                            <td class="col-md-2 border border-light"><img src='{{ post.author.avatar(36) }}' style="padding: 10px;"></td>
+                            <td class="col-md-4 border border-light"><h2>{{ post.body }} </h2></td>
+                            <td class="col-md-2 border border-light"><h2>{{ post.author.username }}</h2></td>
+                            <td class="col-md-2 border border-light"><h2>{{ post.timestamp }}</h2></td>
+                            <td class="col-md-2 border border-light"><h2>{{ post.author.about_me }}</h2></td>
+                            
+                        </tr>
+                    </table>
+                <!-- {% endif %} -->
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}
